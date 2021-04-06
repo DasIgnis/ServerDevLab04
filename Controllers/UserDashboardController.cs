@@ -1,4 +1,5 @@
 ﻿using Lab04.Models;
+using Lab04.Models.ViewModels;
 using Lab04.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -26,9 +27,12 @@ namespace Lab04.Controllers
         public IActionResult Index(int ID = 1)
         {
             User currentUser = _userService.GetById(ID);
-            ViewData["User"] = currentUser;
-            ViewData["Records"] = _recordService.GetRecordsByUser(currentUser.Id);
-            return View();
+            var model = new UserDashboardViewModel
+            {
+                User = currentUser,
+                Records = _recordService.GetRecordsByUser(currentUser.Id)
+            };
+            return View(model);
         }
 
         public void NewPost()

@@ -1,0 +1,25 @@
+﻿@model Lab04.Models.User
+
+<div class="card">
+    <div class="card-body">
+        <div class="image mb-2"><img class="rounded-circle" width="150" src="@Model.Avatar" alt=""></div>
+        <div class="h5">@Model.Name</div>
+        <div>
+            <span class="h7 text-muted">@Model.Username</span>
+            <button class="btn btn-primary btn-sm ml-3" type="button">Follow</button>
+        </div>
+        <div class="h7">
+            @Model.Description
+        </div>
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+            <div class="h6 text-muted">Followers</div>
+            <div class="h5">@Model.SubscriberIds.Count</div>
+        </li>
+        <li class="list-group-item">
+            <div class="h6 text-muted">Following</div>
+            <div class="h5">@Model.SubscriptionIds.Count</div>
+        </li>
+    </ul>
+</div>
