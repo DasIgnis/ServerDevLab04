@@ -1,7 +1,9 @@
+using Lab04.Models;
 using Lab04.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -27,6 +29,9 @@ namespace Lab04
             services.AddControllersWithViews();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IRecordService, RecordService>();
+
+            services.AddDbContext<BloggingContext>(options =>
+                options.UseSqlite(Configuration.GetConnectionString("BloggingDatabase")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +56,10 @@ namespace Lab04
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(name: "blog",
+                    pattern: "blog/{id?}",
+                    defaults: new { controller = "UserDashboard", action = "Index" });
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=UserDashboard}/{action=Index}/{id?}");

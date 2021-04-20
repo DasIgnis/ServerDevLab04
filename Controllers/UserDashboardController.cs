@@ -14,23 +14,32 @@ namespace Lab04.Controllers
     {
         private IUserService _userService;
         private IRecordService _recordService;
+        private BloggingContext _bloggingContext;
 
         public UserDashboardController(
             IUserService userService,
-            IRecordService recordService
-            )
+            IRecordService recordService,
+            BloggingContext bloggingContext)
         {
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));
             _recordService = recordService ?? throw new ArgumentNullException(nameof(recordService));
+            _bloggingContext = bloggingContext ?? throw new ArgumentNullException(nameof(bloggingContext));
         }
 
         public IActionResult Index(int ID = 1)
         {
-            User currentUser = _userService.GetById(ID);
+            User currentUser = _bloggingContext.Users.FirstOrDefault(user => user.Id == ID);
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+
+            List<Record> records = _bloggingContext.Records.Where(record => record.User.Id == currentUser.Id).ToList();
+
             var model = new UserDashboardViewModel
             {
                 User = currentUser,
-                Records = _recordService.GetRecordsByUser(currentUser.Id)
+                Records = records
             };
             return View(model);
         }
@@ -52,7 +61,13 @@ namespace Lab04.Controllers
 
         public void Delete(long postId)
         {
-
+            Record record = _bloggingContext.Records.FirstOrDefault(x => x.Id == postId);
+            if (record == null)
+            {
+                return;
+            }
+            _bloggingContext.Remove(record);
+            _bloggingContext.SaveChanges();
         }
     }
 }

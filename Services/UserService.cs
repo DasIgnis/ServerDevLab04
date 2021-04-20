@@ -16,9 +16,7 @@ namespace Lab04.Services
                 Name = "Ivanov Ivan",
                 Username = "Nagibator777",
                 Description = "Love programming, 4chan and kitties",
-                Avatar = "https://thispersondoesnotexist.com/image",
-                SubscriberIds = new List<long> { 2, 3, 4, 5, 6},
-                SubscriptionIds = new List<long> { 2, 3, 4, 5, 6, 7, 8, 9}
+                Avatar = "https://thispersondoesnotexist.com/image"
             };
         }
     }
