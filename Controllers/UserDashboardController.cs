@@ -12,17 +12,11 @@ namespace Lab04.Controllers
 {
     public class UserDashboardController : Controller
     {
-        private IUserService _userService;
-        private IRecordService _recordService;
         private BloggingContext _bloggingContext;
 
         public UserDashboardController(
-            IUserService userService,
-            IRecordService recordService,
             BloggingContext bloggingContext)
         {
-            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
-            _recordService = recordService ?? throw new ArgumentNullException(nameof(recordService));
             _bloggingContext = bloggingContext ?? throw new ArgumentNullException(nameof(bloggingContext));
         }
 
@@ -44,14 +38,29 @@ namespace Lab04.Controllers
             return View(model);
         }
 
-        public void NewPost()
+        [HttpPost]
+        public IActionResult Create([FromForm]RecordEditModel recordModel)
         {
+            User user = _bloggingContext.Users.FirstOrDefault(user => user.Id == recordModel.UserId);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
 
-        }
+            Record record = new Record
+            {
+                Text = recordModel.Text,
+                DateTime = DateTime.Now,
+                Image = recordModel.Image,
+                Likes = 0,
+                User = user
+            };
 
-        public void Like(long postId)
-        {
+            user.Records.Add(record);
+            _bloggingContext.Records.Add(record);
+            _bloggingContext.SaveChanges();
 
+            return RedirectToAction("Index", "UserDashboard", new { id = recordModel.UserId });
         }
 
         public void Edit(long postId)
@@ -59,15 +68,21 @@ namespace Lab04.Controllers
 
         }
 
-        public void Delete(long postId)
+        //VERY BAD design desision!
+        [HttpGet]
+        public IActionResult Delete(int? id, int? userId)
         {
-            Record record = _bloggingContext.Records.FirstOrDefault(x => x.Id == postId);
+            Record record = _bloggingContext.Records.Where(x => x.Id == id).FirstOrDefault();
             if (record == null)
             {
-                return;
+                return NotFound("Post not found");
             }
-            _bloggingContext.Remove(record);
+
+            _bloggingContext.Records.Remove(record);
             _bloggingContext.SaveChanges();
+
+
+            return RedirectToAction("Index", "UserDashboard", new { id = userId });
         }
     }
 }
