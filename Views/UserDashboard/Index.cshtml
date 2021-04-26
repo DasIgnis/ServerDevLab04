@@ -1,4 +1,5 @@
 ﻿@model Lab04.Models.ViewModels.UserDashboardViewModel
+@using Lab04.Extensions
 @{
     ViewData["Title"] = "Index";
 }
@@ -12,7 +13,10 @@
     <div class="col-md-6 gedf-main">
 
         <!--- \\\\\\\UserPage -->
-        @await Html.PartialAsync("_NewRecord", new RecordEditModel { UserId = Model.User.Id })
+        @if (User.Identity.IsAuthenticated && User.GetLoggedInUserId<string>() == Model.User.Id)
+        {
+            @await Html.PartialAsync("_NewRecord", new RecordEditModel { UserId = Model.User.Id })
+        }
         <!-- UserPage -->
         <!--- Post -->
         @foreach (Record record in Model.Records)
