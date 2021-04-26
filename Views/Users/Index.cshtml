@@ -1,0 +1,23 @@
+﻿@model IEnumerable<User>
+@{
+    ViewBag.Title = "Список пользователей";
+}
+
+<table class="table">
+    <tr><th>Email</th><th>Username</th><th></th></tr>
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.Email</td>
+            <td>@user.Name</td>
+            <td>
+                <form asp-action="Delete" asp-route-id="@user.Id" method="post">
+                    <a class="btn btn-sm btn-secondary" asp-action="Edit" asp-route-id="@user.Id">Edit</a>
+                </form>
+            </td>
+            <td>
+                <a class="btn btn-sm btn-primary" asp-controller="UserDashboard" asp-action="Index" asp-route-id="@user.Id">Link to blog</a>
+            </td>
+        </tr>
+    }
+</table>

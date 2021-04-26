@@ -58,10 +58,21 @@
                 </div>
             </div>
         </form>
-        <form>
-            <button class="btn btn-outline-primary" type="button">Sign Up</button>
-            <button class="btn btn-primary" type="button">Log In</button>
-        </form>
+        <div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <p>@User.Identity.Name</p>
+
+                <form method="post" asp-controller="Account" asp-action="Logout">
+                    <input class="btn btn-primary" type="submit" value="Log out" />
+                </form>
+            }
+            else
+            {
+                <a class="btn btn-outline-primary" asp-controller="Account" asp-action="Register">Sign Up</a>
+                <a class="btn btn-primary" asp-controller="Account" asp-action="Login">Log In</a>
+            }
+        </div>
     </nav>
     <div class="container-fluid gedf-wrapper">
         <main role="main">
