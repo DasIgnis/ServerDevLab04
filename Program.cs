@@ -29,7 +29,7 @@ namespace Lab04
                 var services = scope.ServiceProvider;
                 try
                 {
-                    var context = services.GetRequiredService<BloggingContext>();
+                    var context = services.GetRequiredService<IdentityContext>();
                     context.Database.EnsureCreated();
                     DbInitializer.Initialize(context);
                 }

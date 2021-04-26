@@ -12,9 +12,9 @@ namespace Lab04.Services
         {
             User user = new User
             {
-                Id = 1,
+                Id = "1",
                 Name = "Ivanov Ivan",
-                Username = "Nagibator777",
+                UserName = "Nagibator777",
                 Description = "Love programming, 4chan and kitties",
                 Avatar = "https://thispersondoesnotexist.com/image"
             };
@@ -50,7 +50,7 @@ namespace Lab04.Services
             const int DAY = 24 * HOUR;
             const int MONTH = 30 * DAY;
 
-            var ts = new TimeSpan(DateTime.UtcNow.Ticks - dateTime.Ticks);
+            var ts = new TimeSpan(DateTime.Now.Ticks - dateTime.DateTime.Ticks);
             double delta = Math.Abs(ts.TotalSeconds);
 
             if (delta < 1 * MINUTE)

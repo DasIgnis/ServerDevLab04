@@ -12,17 +12,17 @@ namespace Lab04.Controllers
 {
     public class UserDashboardController : Controller
     {
-        private BloggingContext _bloggingContext;
+        private IdentityContext _bloggingContext;
 
         public UserDashboardController(
-            BloggingContext bloggingContext)
+            IdentityContext bloggingContext)
         {
             _bloggingContext = bloggingContext ?? throw new ArgumentNullException(nameof(bloggingContext));
         }
 
-        public IActionResult Index(int ID = 1)
+        public IActionResult Index(string ID)
         {
-            User currentUser = _bloggingContext.Users.FirstOrDefault(user => user.Id == ID);
+            User currentUser = _bloggingContext.Users.FirstOrDefault(user => user.Id == ID.ToString());
             if (currentUser == null)
             {
                 return NotFound();
@@ -41,7 +41,7 @@ namespace Lab04.Controllers
         [HttpPost]
         public IActionResult Create([FromForm]RecordEditModel recordModel)
         {
-            User user = _bloggingContext.Users.FirstOrDefault(user => user.Id == recordModel.UserId);
+            User user = _bloggingContext.Users.FirstOrDefault(user => user.Id == recordModel.UserId.ToString());
             if (user == null)
             {
                 return NotFound("User not found");
@@ -50,7 +50,7 @@ namespace Lab04.Controllers
             Record record = new Record
             {
                 Text = recordModel.Text,
-                DateTime = DateTime.Now,
+                DateTime = DateTimeOffset.Now,
                 Image = recordModel.Image,
                 Likes = 0,
                 User = user
@@ -63,9 +63,19 @@ namespace Lab04.Controllers
             return RedirectToAction("Index", "UserDashboard", new { id = recordModel.UserId });
         }
 
-        public void Edit(long postId)
+        [HttpGet]
+        public IActionResult Edit(long? id, int? userId)
         {
+            Record record = _bloggingContext.Records.Where(x => x.Id == id).FirstOrDefault();
+            if (record == null)
+            {
+                return NotFound("Post not found");
+            }
 
+            record.DateTime = DateTime.Now;
+            _bloggingContext.SaveChanges();
+
+            return RedirectToAction("Index", "UserDashboard", new { id = userId });
         }
 
         //VERY BAD design desision!

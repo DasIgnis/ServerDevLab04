@@ -12,9 +12,9 @@ namespace Lab04.Services
         {
             return new User
             {
-                Id = 1,
+                Id = "1",
                 Name = "Ivanov Ivan",
-                Username = "Nagibator777",
+                UserName = "Nagibator777",
                 Description = "Love programming, 4chan and kitties",
                 Avatar = "https://thispersondoesnotexist.com/image"
             };

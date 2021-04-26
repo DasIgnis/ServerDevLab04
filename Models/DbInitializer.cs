@@ -8,7 +8,7 @@ namespace Lab04.Models
 {
     public class DbInitializer
     {
-        public static void Initialize(BloggingContext context)
+        public static void Initialize(IdentityContext context)
         {
             // Look for any students.
             if (context.Users.Any())
@@ -18,9 +18,9 @@ namespace Lab04.Models
 
             var users = new User[]
             {
-                new User{ Name = "Ivanov Ivan", Username = "Nagibator777", Description = "Love programming, 4chan and kitties", Avatar = "https://thispersondoesnotexist.com/image" },
-                new User{ Name = "Pietrov Pietr", Username = "Ugnetator666", Description = "Dunno lol", Avatar = "https://thispersondoesnotexist.com/image" },
-                new User{ Name = "Simonov Oleh", Username = "anon_from_nenka", Description = "Senior mobile developer, 10 years experience", Avatar = "https://thispersondoesnotexist.com/image" }
+                new User{ Name = "Ivanov Ivan", UserName = "Nagibator777", Description = "Love programming, 4chan and kitties", Avatar = "https://thispersondoesnotexist.com/image" },
+                new User{ Name = "Pietrov Pietr", UserName = "Ugnetator666", Description = "Dunno lol", Avatar = "https://thispersondoesnotexist.com/image" },
+                new User{ Name = "Simonov Oleh", UserName = "anon_from_nenka", Description = "Senior mobile developer, 10 years experience", Avatar = "https://thispersondoesnotexist.com/image" }
             };
 
             users[0].Subscribers = new List<User> { users[1], users[2] };
