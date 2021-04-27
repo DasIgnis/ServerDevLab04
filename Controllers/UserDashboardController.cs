@@ -64,7 +64,7 @@ namespace Lab04.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(long? id, int? userId)
+        public IActionResult Edit(long? id, string? userId)
         {
             Record record = _bloggingContext.Records.Where(x => x.Id == id).FirstOrDefault();
             if (record == null)
@@ -80,7 +80,7 @@ namespace Lab04.Controllers
 
         //VERY BAD design desision!
         [HttpGet]
-        public IActionResult Delete(int? id, int? userId)
+        public IActionResult Delete(int? id, string? userId)
         {
             Record record = _bloggingContext.Records.Where(x => x.Id == id).FirstOrDefault();
             if (record == null)
