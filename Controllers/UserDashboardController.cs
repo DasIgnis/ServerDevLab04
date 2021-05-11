@@ -1,6 +1,7 @@
 ﻿using Lab04.Models;
 using Lab04.Models.ViewModels;
 using Lab04.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -47,6 +48,11 @@ namespace Lab04.Controllers
                 return NotFound("User not found");
             }
 
+            if (User.Identity.Name != user.UserName)
+            {
+                return BadRequest("Not Authorized");
+            }
+
             Record record = new Record
             {
                 Text = recordModel.Text,
@@ -63,13 +69,24 @@ namespace Lab04.Controllers
             return RedirectToAction("Index", "UserDashboard", new { id = recordModel.UserId });
         }
 
-        [HttpGet]
+        [HttpPut]
         public IActionResult Edit(long? id, string? userId)
         {
             Record record = _bloggingContext.Records.Where(x => x.Id == id).FirstOrDefault();
             if (record == null)
             {
                 return NotFound("Post not found");
+            }
+
+            User user = _bloggingContext.Users.FirstOrDefault(user => user.Id == userId);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            if (User.Identity.Name != user.UserName)
+            {
+                return BadRequest("Not Authorized");
             }
 
             record.DateTime = DateTime.Now;
@@ -86,6 +103,17 @@ namespace Lab04.Controllers
             if (record == null)
             {
                 return NotFound("Post not found");
+            }
+
+            User user = _bloggingContext.Users.FirstOrDefault(user => user.Id == userId);
+            if (user == null)
+            {
+                return NotFound("User not found");
+            }
+
+            if (User.Identity.Name != user.UserName)
+            {
+                return BadRequest("Not Authorized");
             }
 
             _bloggingContext.Records.Remove(record);

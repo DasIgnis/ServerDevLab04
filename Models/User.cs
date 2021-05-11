@@ -14,6 +14,7 @@ namespace Lab04.Models
         public List<User> Subscriptions { get; set; }
         public List<User> Subscribers { get; set; }
         public List<Record> Records { get; set; }
+        public string Role { get; set; }
 
         public User()
         {
